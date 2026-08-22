@@ -9,7 +9,7 @@ AI-powered Website Traffic Forecasting Platform using:
 - SQLite
 - Bootstrap
 
-## Features
+## Features 🔮
 
 - AI Traffic Forecasting
 - Random Forest + Linear Regression
@@ -21,9 +21,10 @@ AI-powered Website Traffic Forecasting Platform using:
 - AI Charts & Insights
 
 ---
+## DASHBOARD 📈
 ![photo_2026-08-22_22-55-43](interface/photo_2026-08-22_22-55-43.jpg)
 ----
-# Installation
+# Installation 👾
 
 ## 1. Create Virtual Environment
 
