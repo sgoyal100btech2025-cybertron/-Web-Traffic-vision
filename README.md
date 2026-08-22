@@ -2,7 +2,7 @@
 
 AI-powered Website Traffic Forecasting Platform using:
 
-- Flask
+- Flask 
 - Scikit-learn
 - Plotly
 - Pandas
@@ -21,7 +21,8 @@ AI-powered Website Traffic Forecasting Platform using:
 - AI Charts & Insights
 
 ---
-
+![photo_2026-08-22_22-55-43](interface/photo_2026-08-22_22-55-43.jpg)
+----
 # Installation
 
 ## 1. Create Virtual Environment
