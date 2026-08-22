@@ -1,0 +1,1202 @@
+/* =====================================================
+   TRAFFICVISION AI ENTERPRISE UI
+===================================================== */
+
+:root{
+
+    --primary:#38bdf8;
+    --primary-dark:#2563eb;
+
+    --success:#22c55e;
+    --danger:#ef4444;
+    --warning:#f59e0b;
+
+    --dark:#030712;
+    --dark-card:#0f172a;
+    --dark-card-2:#111827;
+
+    --text:#ffffff;
+    --text-secondary:#94a3b8;
+
+}
+.badge-soft-green{
+    background:rgba(34,197,94,0.15);
+    color:#22c55e;
+    padding:8px 14px;
+    border-radius:30px;
+    font-weight:600;
+}
+
+.badge-soft-blue{
+    background:rgba(56,189,248,0.15);
+    color:#38bdf8;
+    padding:8px 14px;
+    border-radius:30px;
+    font-weight:600;
+}
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    background:
+        radial-gradient(circle at top right,
+        rgba(56,189,248,0.08),
+        transparent 35%),
+
+        radial-gradient(circle at bottom left,
+        rgba(37,99,235,0.08),
+        transparent 35%),
+
+        var(--dark);
+
+    color:var(--text);
+
+    overflow-x:hidden;
+
+    min-height:100vh;
+
+    position:relative;
+
+}
+
+/* =====================================================
+   CUSTOM SCROLLBAR
+===================================================== */
+
+::-webkit-scrollbar{
+    width:10px;
+}
+
+::-webkit-scrollbar-track{
+    background:#0f172a;
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:linear-gradient(
+        180deg,
+        var(--primary),
+        var(--primary-dark)
+    );
+
+    border-radius:30px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:linear-gradient(
+        180deg,
+        #0ea5e9,
+        #1d4ed8
+    );
+
+}
+
+/* =====================================================
+   BACKGROUND GLOW
+===================================================== */
+
+.bg-glow{
+
+    position:fixed;
+
+    width:550px;
+    height:550px;
+
+    background:rgba(56,189,248,0.08);
+
+    filter:blur(130px);
+
+    border-radius:50%;
+
+    top:-150px;
+    right:-120px;
+
+    z-index:-1;
+
+}
+
+/* =====================================================
+   PARTICLES
+===================================================== */
+
+.particle{
+
+    position:fixed;
+
+    bottom:-20px;
+
+    background:rgba(56,189,248,0.5);
+
+    border-radius:50%;
+
+    pointer-events:none;
+
+    animation:particleFloat linear forwards;
+
+    z-index:-1;
+
+}
+
+@keyframes particleFloat{
+
+    to{
+
+        transform:
+            translateY(-110vh)
+            translateX(80px);
+
+        opacity:0;
+
+    }
+
+}
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.sidebar{
+
+    width:270px;
+    height:100vh;
+
+    position:fixed;
+
+    left:0;
+    top:0;
+
+    background:rgba(15,23,42,0.92);
+
+    backdrop-filter:blur(14px);
+
+    border-right:1px solid rgba(
+        255,
+        255,
+        255,
+        0.05
+    );
+
+    padding:30px 20px;
+
+    z-index:999;
+
+}
+
+.logo{
+
+    font-size:30px;
+
+    font-weight:700;
+
+    color:var(--primary);
+
+    margin-bottom:50px;
+
+    text-shadow:0 0 20px var(--primary);
+
+}
+
+/* =====================================================
+   MENU
+===================================================== */
+
+.menu a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:15px 18px;
+
+    color:#cbd5e1;
+
+    text-decoration:none;
+
+    border-radius:18px;
+
+    margin-bottom:15px;
+
+    transition:0.3s ease;
+
+    font-weight:500;
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.menu a::before{
+
+    content:'';
+
+    position:absolute;
+
+    inset:0;
+
+    background:linear-gradient(
+        135deg,
+        rgba(56,189,248,0.15),
+        rgba(37,99,235,0.15)
+    );
+
+    opacity:0;
+
+    transition:0.3s ease;
+
+}
+
+.menu a:hover::before,
+.menu .active::before{
+    opacity:1;
+}
+
+.menu a:hover,
+.menu .active{
+
+    transform:translateX(6px);
+
+    color:white;
+
+    box-shadow:
+        0 0 25px rgba(56,189,248,0.2);
+
+}
+
+/* =====================================================
+   MAIN CONTENT
+===================================================== */
+
+.main-content{
+
+    margin-left:270px;
+
+    padding:35px;
+
+}
+
+/* =====================================================
+   TITLES
+===================================================== */
+
+.page-title{
+
+    font-size:42px;
+
+    font-weight:700;
+
+    line-height:1.2;
+
+}
+
+.page-title span{
+
+    color:var(--primary);
+
+    text-shadow:0 0 15px var(--primary);
+
+}
+
+/* =====================================================
+   BADGES
+===================================================== */
+
+.live-badge{
+
+    background:rgba(34,197,94,0.12);
+
+    border:1px solid rgba(
+        34,
+        197,
+        94,
+        0.25
+    );
+
+    color:var(--success);
+
+    padding:10px 18px;
+
+    border-radius:50px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+/* =====================================================
+   GLASS CARDS
+===================================================== */
+
+.glass-card{
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15,23,42,0.95),
+            rgba(17,24,39,0.92)
+        );
+
+    border-radius:30px;
+
+    padding:30px;
+
+    border:1px solid rgba(
+        255,
+        255,
+        255,
+        0.05
+    );
+
+    position:relative;
+
+    overflow:hidden;
+
+    transition:0.4s ease;
+
+    backdrop-filter:blur(16px);
+
+}
+
+.glass-card::before{
+
+    content:'';
+
+    position:absolute;
+
+    width:250px;
+    height:250px;
+
+    background:radial-gradient(
+        rgba(56,189,248,0.15),
+        transparent
+    );
+
+    top:-120px;
+    right:-120px;
+
+    border-radius:50%;
+
+}
+
+.glass-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:
+        0 0 40px rgba(56,189,248,0.12);
+
+}
+
+/* =====================================================
+   CARD ICONS
+===================================================== */
+
+.card-icon{
+
+    width:75px;
+    height:75px;
+
+    border-radius:24px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+    );
+
+    font-size:32px;
+
+    margin-bottom:20px;
+
+    box-shadow:
+        0 0 25px rgba(56,189,248,0.3);
+
+}
+
+/* =====================================================
+   CARD TEXT
+===================================================== */
+
+.card-title{
+
+    color:var(--text-secondary);
+
+    font-size:15px;
+
+    margin-bottom:10px;
+
+}
+
+.card-value{
+
+    font-size:42px;
+
+    font-weight:700;
+
+}
+
+/* =====================================================
+   CHART BOX
+===================================================== */
+
+.chart-box{
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15,23,42,0.95),
+            rgba(17,24,39,0.92)
+        );
+
+    border-radius:30px;
+
+    padding:30px;
+
+    border:1px solid rgba(
+        255,
+        255,
+        255,
+        0.05
+    );
+
+    overflow:hidden;
+
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.custom-btn{
+
+    padding:15px 28px;
+
+    border-radius:18px;
+
+    text-decoration:none;
+
+    color:white;
+
+    font-weight:600;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    transition:0.3s ease;
+
+    border:none;
+
+    cursor:pointer;
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.custom-btn::before{
+
+    content:'';
+
+    position:absolute;
+
+    width:0;
+    height:0;
+
+    background:rgba(255,255,255,0.15);
+
+    border-radius:50%;
+
+    transform:translate(-50%,-50%);
+
+    transition:width .6s,height .6s;
+
+}
+
+.custom-btn:hover::before{
+
+    width:300px;
+    height:300px;
+
+}
+
+.btn-blue{
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+    );
+
+}
+
+.btn-green{
+
+    background:linear-gradient(
+        135deg,
+        var(--success),
+        #16a34a
+    );
+
+}
+
+.btn-orange{
+
+    background:linear-gradient(
+        135deg,
+        var(--warning),
+        #d97706
+    );
+
+}
+
+.btn-red{
+
+    background:linear-gradient(
+        135deg,
+        var(--danger),
+        #dc2626
+    );
+
+}
+
+.custom-btn:hover{
+
+    transform:translateY(-5px);
+
+    color:white;
+
+    box-shadow:
+        0 0 30px rgba(56,189,248,0.25);
+
+}
+
+/* =====================================================
+   TABLES
+===================================================== */
+
+.table{
+    margin-bottom:0;
+    color:#e2e8f0 !important;
+    background:transparent !important;
+}
+
+.table thead{
+    background:rgba(56,189,248,0.08);
+}
+
+.table thead th{
+    border:none;
+    color:#38bdf8 !important;
+    padding:18px;
+    font-size:14px;
+    font-weight:600;
+    background:transparent !important;
+}
+
+.table tbody tr{
+    transition:all .3s ease;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+    background:transparent !important;
+}
+
+.table tbody tr:hover{
+    background:rgba(56,189,248,0.08) !important;
+    transform:scale(1.01);
+}
+
+.table tbody td{
+    padding:18px;
+    border:none;
+    color:#e2e8f0 !important;
+    background:transparent !important;
+}
+
+/* Force Dark Theme */
+
+.table-responsive{
+    background:#0f172a !important;
+    border-radius:20px;
+}
+
+.glass-card .table{
+    background:transparent !important;
+}
+
+.glass-card{
+    background:linear-gradient(
+        145deg,
+        #0f172a,
+        #111827
+    ) !important;
+}
+/* =====================================================
+   INPUTS
+===================================================== */
+
+input,
+select,
+textarea{
+
+    background:#111827 !important;
+
+    border:1px solid rgba(
+        255,
+        255,
+        255,
+        0.08
+    ) !important;
+
+    color:white !important;
+
+    border-radius:16px !important;
+
+    padding:14px 18px !important;
+
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+
+    border-color:var(--primary) !important;
+
+    box-shadow:
+        0 0 0 0.2rem rgba(
+            56,
+            189,
+            248,
+            0.15
+        ) !important;
+
+}
+/* =========================================
+   PREMIUM BUTTONS
+========================================= */
+
+.action-buttons{
+    display:flex;
+    gap:25px;
+    align-items:center;
+}
+
+.premium-btn{
+
+    min-width:220px;
+    height:60px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+
+    border:none;
+    border-radius:18px;
+
+    font-size:16px;
+    font-weight:600;
+
+    text-decoration:none;
+    color:#fff;
+
+    position:relative;
+    overflow:hidden;
+
+    transition:all .35s ease;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.25);
+
+}
+
+.premium-btn::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:-100%;
+
+    width:100%;
+    height:100%;
+
+    background:
+    linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.25),
+        transparent
+    );
+
+    transition:.8s;
+
+}
+
+.premium-btn:hover::before{
+
+    left:100%;
+
+}
+
+.premium-btn:hover{
+
+    transform:
+        translateY(-5px)
+        scale(1.03);
+
+    color:white;
+
+}
+
+/* Upload */
+
+.btn-upload{
+
+    background:
+    linear-gradient(
+        135deg,
+        #22c55e,
+        #16a34a
+    );
+
+    box-shadow:
+        0 10px 30px rgba(34,197,94,.35);
+
+}
+
+/* Dashboard */
+
+.btn-dashboard{
+
+    background:
+    linear-gradient(
+        135deg,
+        #0ea5e9,
+        #2563eb
+    );
+
+    box-shadow:
+        0 10px 30px rgba(37,99,235,.35);
+
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+    .action-buttons{
+
+        flex-direction:column;
+
+    }
+
+    .premium-btn{
+
+        width:100%;
+
+    }
+
+}
+/* =====================================================
+   UPLOAD AREA
+===================================================== */
+
+.upload-area{
+
+    width:100%;
+
+}
+
+.upload-box{
+
+    border:2px dashed rgba(
+        56,
+        189,
+        248,
+        0.35
+    );
+
+    border-radius:28px;
+
+    padding:60px 30px;
+
+    text-align:center;
+
+    transition:0.3s ease;
+
+    background:rgba(15,23,42,0.45);
+
+}
+
+.upload-box:hover,
+.drag-active .upload-box{
+
+    border-color:var(--primary);
+
+    background:rgba(15,23,42,0.7);
+
+    transform:scale(1.01);
+
+}
+
+.upload-animation{
+
+    animation:pulseGlow 2s infinite;
+
+}
+
+@keyframes pulseGlow{
+
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.08);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+
+}
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+.tv-toast{
+
+    position:fixed;
+
+    top:30px;
+    right:30px;
+
+    background:#111827;
+
+    border-left:4px solid var(--primary);
+
+    color:white;
+
+    padding:18px 22px;
+
+    border-radius:16px;
+
+    z-index:9999;
+
+    opacity:0;
+
+    transform:translateX(100px);
+
+    transition:0.4s ease;
+
+    box-shadow:
+        0 0 30px rgba(0,0,0,0.35);
+
+}
+
+.tv-toast.show{
+
+    opacity:1;
+
+    transform:translateX(0);
+
+}
+
+.toast-content{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+/* =====================================================
+   LOADER
+===================================================== */
+
+.page-loader{
+
+    position:fixed;
+
+    inset:0;
+
+    background:#030712;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:99999;
+
+}
+
+.loader-wrapper{
+
+    text-align:center;
+
+}
+
+.loader-ring{
+
+    width:90px;
+    height:90px;
+
+    border:6px solid rgba(
+        255,
+        255,
+        255,
+        0.08
+    );
+
+    border-top-color:var(--primary);
+
+    border-radius:50%;
+
+    animation:spin 1s linear infinite;
+
+    margin:auto;
+
+}
+
+.loader-text{
+
+    margin-top:25px;
+
+}
+
+.loader-text h3{
+
+    font-size:24px;
+
+    margin-bottom:8px;
+
+}
+
+.loader-text p{
+
+    color:var(--text-secondary);
+
+}
+
+@keyframes spin{
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+/* =====================================================
+   BADGES
+===================================================== */
+
+.badge-soft-blue{
+
+    background:rgba(56,189,248,0.15);
+
+    color:var(--primary);
+
+    padding:8px 14px;
+
+    border-radius:30px;
+
+}
+
+.badge-soft-green{
+
+    background:rgba(34,197,94,0.15);
+
+    color:var(--success);
+
+    padding:8px 14px;
+
+    border-radius:30px;
+
+}
+
+.badge-soft-orange{
+
+    background:rgba(245,158,11,0.15);
+
+    color:var(--warning);
+
+    padding:8px 14px;
+
+    border-radius:30px;
+
+}
+
+.badge-soft-red{
+
+    background:rgba(239,68,68,0.15);
+
+    color:var(--danger);
+
+    padding:8px 14px;
+
+    border-radius:30px;
+
+}
+
+/* =====================================================
+   ANIMATIONS
+===================================================== */
+
+.hidden-animation{
+
+    opacity:0;
+
+    transform:translateY(50px);
+
+}
+
+.show-animation{
+
+    opacity:1;
+
+    transform:translateY(0);
+
+    transition:1s ease;
+
+}
+
+.fade-in{
+
+    animation:fadeIn 1s ease;
+
+}
+
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+    }
+
+    to{
+        opacity:1;
+    }
+
+}
+
+/* =====================================================
+   SCROLL TOP
+===================================================== */
+
+.scroll-top-btn{
+
+    position:fixed;
+
+    right:25px;
+    bottom:25px;
+
+    width:50px;
+    height:50px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+    );
+
+    color:white;
+
+    font-size:20px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:0.3s ease;
+
+    z-index:999;
+
+}
+
+.show-scroll{
+
+    opacity:1;
+
+    visibility:visible;
+
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:991px){
+
+    .sidebar{
+        display:none;
+    }
+
+    .main-content{
+        margin-left:0;
+        padding:20px;
+    }
+
+    .page-title{
+        font-size:30px;
+    }
+
+    .card-value{
+        font-size:32px;
+    }
+
+}
+
+@media(max-width:576px){
+
+    .custom-btn{
+
+        width:100%;
+
+        justify-content:center;
+
+    }
+
+}
