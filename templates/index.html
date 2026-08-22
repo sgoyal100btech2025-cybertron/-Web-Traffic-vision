@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Website Traffic Forecasting
+    </title>
+
+    <!-- Bootstrap -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Google Fonts -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+    <!-- Background Glow -->
+
+    <div class="bg-glow"></div>
+
+    <!-- Sidebar -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+            <i class="bi bi-activity"></i>
+            Website Traffic Forecasting
+        </div>
+
+        <div class="menu">
+
+            <a href="/">
+                <i class="bi bi-speedometer2"></i>
+                Dashboard
+            </a>
+
+            <a href="/predict" class="active">
+                <i class="bi bi-graph-up-arrow"></i>
+                Forecast
+            </a>
+
+            <a href="/upload">
+                <i class="bi bi-upload"></i>
+                Upload CSV
+            </a>
+
+            <a href="/history">
+                <i class="bi bi-clock-history"></i>
+                Prediction History
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Main Content -->
+
+    <div class="main-content fade-in">
+
+        <!-- Topbar -->
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+
+            <div>
+
+                <h1 class="page-title">
+                  Website Traffic <span>Forecast</span>
+                </h1>
+
+                <p class="text-secondary mt-2">
+                   Website traffic forecasting and trend analysis based on historical visitor data
+                </p>
+
+            </div>
+
+            <div class="live-badge">
+
+                <i class="bi bi-stars"></i>
+                Forecast Analytics Active       
+
+            </div>
+
+        </div>
+
+        <!-- AI Summary Cards -->
+
+        <div class="row g-4 mb-4">
+
+            <!-- Total Predictions -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="glass-card stat-card slide-up">
+
+                    <div class="card-icon">
+                        <i class="bi bi-calendar2-week-fill"></i>
+                    </div>
+
+                    <div class="card-title">
+                        Forecast Days
+                    </div>
+
+                    <div class="card-value">
+                        {{ results|length }}
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Highest Prediction -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="glass-card stat-card slide-up">
+
+                    <div class="card-icon">
+                        <i class="bi bi-graph-up-arrow"></i>
+                    </div>
+
+                    <div class="card-title">
+                        Highest Forecast
+                    </div>
+
+                    <div class="card-value text-success-glow">
+
+                        {{ results | map(attribute=1) | max }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Lowest Prediction -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="glass-card stat-card slide-up">
+
+                    <div class="card-icon">
+                        <i class="bi bi-graph-down-arrow"></i>
+                    </div>
+
+                    <div class="card-title">
+                        Lowest Forecast
+                    </div>
+
+                    <div class="card-value text-danger-glow">
+
+                        {{ results | map(attribute=1) | min }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- AI Confidence -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="glass-card stat-card slide-up">
+
+                    <div class="card-icon">
+                        <i class="bi bi-cpu-fill"></i>
+                    </div>
+
+                    <div class="card-title">
+                      Forecast Accuracy
+                    </div>
+
+                    <div class="card-value text-blue-glow">
+                        96%
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Prediction Cards -->
+
+        <div class="prediction-grid">
+
+            {% for d, p in results %}
+
+            <div class="prediction-card glass-card">
+
+                <div class="prediction-date">
+
+                    <i class="bi bi-calendar-event"></i>
+
+                    {{ d }}
+
+                </div>
+
+                <div class="prediction-value">
+
+                    {{ p }}
+
+                </div>
+
+                <div class="prediction-label">
+
+                    <i class="bi bi-arrow-up-right-circle-fill"></i>
+
+                    Forecasted Visitors
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- AI Analytics Chart -->
+
+        <div class="chart-box glass-card mt-4">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+
+                <div>
+
+                    <h3 class="chart-title">
+                        Traffic Forecast Analytics
+                    </h3>
+
+                    <p class="text-secondary">
+                        Next 10 days website traffic forecast visualization
+                    </p>
+
+                </div>
+
+                <div class="badge-soft-blue">
+
+                    <i class="bi bi-bar-chart-fill"></i>
+                    Real-Time Forecast
+
+                </div>
+
+            </div>
+
+            <div id="predchart"></div>
+
+        </div>
+
+        <!-- Forecast Table -->
+
+        <div class="glass-card mt-4">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+
+                <div>
+
+                    <h3 class="chart-title">
+                        Detailed Forecast Table
+                    </h3>
+
+                    <p class="text-secondary">
+                      Forecasted website traffic data for upcoming days
+                    </p>
+
+                </div>
+
+                <div class="badge-soft-green">
+
+                    <i class="bi bi-check-circle-fill"></i>
+                    Prediction Ready
+
+                </div>
+
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table align-middle">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Date</th>
+                            <th>Predicted Visitors</th>
+                            <th>Trend</th>
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for d, p in results %}
+
+                        <tr>
+
+                            <td>
+
+                                <i class="bi bi-calendar3"></i>
+
+                                {{ d }}
+
+                            </td>
+
+                            <td>
+
+                                <span class="badge-soft-green">
+
+                                    {{ p }} Visitors
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <span class="text-success-glow">
+
+                                    <i class="bi bi-arrow-up-right"></i>
+
+                                    Positive Growth
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <span class="badge bg-success">
+
+                                    Forecasted
+
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <!-- AI Insights -->
+
+        <div class="row g-4 mt-1">
+
+            <div class="col-lg-4">
+
+                <div class="glass-card insight-card">
+
+                    <i class="bi bi-cpu-fill text-blue-glow fs-1"></i>
+
+                    <h4 class="mt-3">
+                      Forecasting Models
+                    </h4>
+
+                    <p class="text-secondary mt-3">
+Historical traffic data is analyzed using
+forecasting techniques to estimate future
+website visitor trends and growth patterns
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="glass-card insight-card">
+
+                    <i class="bi bi-bar-chart-line-fill text-success-glow fs-1"></i>
+
+                    <h4 class="mt-3">
+                        Forecast Analytics
+                    </h4>
+
+                    <p class="text-secondary mt-3">
+
+                      Analyze visitor growth trends, traffic
+patterns, and future website performance
+through interactive analytics.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="glass-card insight-card">
+
+                    <i class="bi bi-lightning-charge-fill text-warning fs-1"></i>
+
+                    <h4 class="mt-3">
+                        Dataset Processing
+                    </h4>
+
+                    <p class="text-secondary mt-3">
+
+                        Uploaded datasets are processed and
+analyzed automatically to generate
+updated traffic forecasts and insights.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Action Buttons -->
+
+        <div class="action-buttons mt-5">
+
+            <a href="/" class="custom-btn btn-blue">
+
+                <i class="bi bi-house-fill"></i>
+                Back Dashboard
+
+            </a>
+
+            <a href="/history" class="custom-btn btn-orange">
+
+                <i class="bi bi-clock-history"></i>
+                Prediction History
+
+            </a>
+
+            <a href="/export-history" class="custom-btn btn-green">
+
+                <i class="bi bi-download"></i>
+                Export Forecast
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Plotly -->
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <!-- Main JS -->
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <!-- Plotly Config -->
+
+    <script>
+
+        var graphs = {{ pred_graph | safe }};
+
+        graphs.layout.paper_bgcolor = '#0f172a';
+        graphs.layout.plot_bgcolor = '#0f172a';
+
+        graphs.layout.font = {
+            color: '#ffffff'
+        };
+
+        graphs.layout.xaxis = {
+            gridcolor: '#1e293b'
+        };
+
+        graphs.layout.yaxis = {
+            gridcolor: '#1e293b'
+        };
+
+        graphs.layout.hoverlabel = {
+            bgcolor: "#111827",
+            bordercolor: "#38bdf8",
+            font: {
+                color: "white"
+            }
+        };
+
+        Plotly.newPlot(
+            'predchart',
+            graphs.data,
+            graphs.layout,
+            {
+                responsive: true,
+                displayModeBar: false
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

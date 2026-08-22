@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Website Traffic Forecasting Dashboard</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Plotly -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        body{
+            background:#030712;
+            color:white;
+            overflow-x:hidden;
+        }
+
+        .bg-glow{
+            position:fixed;
+            width:500px;
+            height:500px;
+            background:rgba(56,189,248,0.08);
+            filter:blur(120px);
+            border-radius:50%;
+            top:-100px;
+            right:-100px;
+            z-index:-1;
+        }
+
+        /* Sidebar */
+
+        .sidebar{
+            width:260px;
+            height:100vh;
+            position:fixed;
+            left:0;
+            top:0;
+            background:rgba(15,23,42,0.95);
+            backdrop-filter:blur(10px);
+            border-right:1px solid rgba(255,255,255,0.05);
+            padding:30px 20px;
+        }
+
+        .logo{
+            font-size:30px;
+            font-weight:700;
+            color:#38bdf8;
+            margin-bottom:50px;
+            text-shadow:0 0 20px #38bdf8;
+        }
+
+        .menu a{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:14px 18px;
+            color:#cbd5e1;
+            text-decoration:none;
+            border-radius:16px;
+            margin-bottom:15px;
+            transition:0.3s;
+        }
+
+        .menu a:hover,
+        .menu .active{
+            background:linear-gradient(135deg,#0ea5e9,#2563eb);
+            color:white;
+            transform:translateX(5px);
+        }
+
+        /* Main */
+
+        .main-content{
+            margin-left:260px;
+            padding:35px;
+        }
+
+        .topbar{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:35px;
+            flex-wrap:wrap;
+            gap:20px;
+        }
+
+        .page-title{
+            font-size:38px;
+            font-weight:700;
+        }
+
+        .page-title span{
+            color:#38bdf8;
+        }
+
+        .live-badge{
+            background:rgba(34,197,94,0.12);
+            color:#22c55e;
+            border:1px solid rgba(34,197,94,0.2);
+            padding:10px 18px;
+            border-radius:50px;
+            font-size:14px;
+        }
+
+        /* Alerts */
+
+        .flash-alert{
+            border-radius:18px;
+            border:none;
+            padding:16px 20px;
+            margin-bottom:25px;
+            font-weight:500;
+        }
+
+        /* Cards */
+
+        .stats-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:25px;
+        }
+
+        .stat-card{
+            background:linear-gradient(145deg,#0f172a,#111827);
+            border-radius:28px;
+            padding:28px;
+            position:relative;
+            overflow:hidden;
+            border:1px solid rgba(255,255,255,0.05);
+            transition:0.4s ease;
+        }
+
+        .stat-card:hover{
+            transform:translateY(-8px);
+            box-shadow:0 0 35px rgba(56,189,248,0.18);
+        }
+
+        .card-icon{
+            width:70px;
+            height:70px;
+            border-radius:22px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:30px;
+            margin-bottom:20px;
+            background:linear-gradient(135deg,#0ea5e9,#2563eb);
+        }
+
+        .card-title{
+            color:#94a3b8;
+            font-size:15px;
+            margin-bottom:10px;
+        }
+
+        .card-value{
+            font-size:38px;
+            font-weight:700;
+        }
+
+        .growth{
+            color:#22c55e;
+        }
+
+        .danger{
+            color:#ef4444;
+        }
+
+        /* Chart */
+
+        .chart-box{
+            background:linear-gradient(145deg,#0f172a,#111827);
+            border-radius:30px;
+            padding:30px;
+            margin-top:35px;
+            border:1px solid rgba(255,255,255,0.05);
+        }
+
+        .chart-title{
+            font-size:24px;
+            font-weight:600;
+            margin-bottom:20px;
+        }
+
+        /* Insights */
+
+        .insight-grid{
+            margin-top:35px;
+        }
+
+        .insight-card{
+            background:linear-gradient(145deg,#0f172a,#111827);
+            border-radius:26px;
+            padding:25px;
+            border:1px solid rgba(255,255,255,0.05);
+            transition:0.3s;
+            height:100%;
+        }
+
+        .insight-card:hover{
+            transform:translateY(-6px);
+            box-shadow:0 0 25px rgba(56,189,248,0.12);
+        }
+
+        .insight-card i{
+            font-size:40px;
+            color:#38bdf8;
+            margin-bottom:18px;
+        }
+
+        .insight-card h4{
+            margin-bottom:12px;
+            font-weight:600;
+        }
+
+        .insight-card p{
+            color:#94a3b8;
+            font-size:14px;
+            line-height:1.7;
+        }
+
+        /* Buttons */
+
+        .action-buttons{
+            margin-top:35px;
+            display:flex;
+            gap:18px;
+            flex-wrap:wrap;
+        }
+
+        .custom-btn{
+            padding:15px 28px;
+            border-radius:18px;
+            text-decoration:none;
+            color:white;
+            font-weight:600;
+            display:flex;
+            align-items:center;
+            gap:12px;
+            transition:0.3s ease;
+        }
+
+        .btn-blue{
+            background:linear-gradient(135deg,#0ea5e9,#2563eb);
+        }
+
+        .btn-green{
+            background:linear-gradient(135deg,#22c55e,#16a34a);
+        }
+
+        .btn-orange{
+            background:linear-gradient(135deg,#f59e0b,#d97706);
+        }
+
+        .custom-btn:hover{
+            transform:translateY(-5px);
+            color:white;
+        }
+
+        /* Responsive */
+
+        @media(max-width:991px){
+
+            .sidebar{
+                display:none;
+            }
+
+            .main-content{
+                margin-left:0;
+                padding:20px;
+            }
+
+            .page-title{
+                font-size:28px;
+            }
+
+            .card-value{
+                font-size:30px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="bg-glow"></div>
+
+    <!-- Sidebar -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+            <i class="bi bi-activity"></i>
+             Website Traffic Forecast
+        </div>
+
+        <div class="menu">
+
+            <a href="/" class="active">
+                <i class="bi bi-speedometer2"></i>
+                Dashboard
+            </a>
+
+            <a href="/predict">
+                <i class="bi bi-graph-up-arrow"></i>
+                Forecast
+            </a>
+
+            <a href="/upload">
+                <i class="bi bi-upload"></i>
+                Upload CSV
+            </a>
+
+            <a href="/history">
+                <i class="bi bi-clock-history"></i>
+                History
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Main -->
+
+    <div class="main-content">
+
+        <!-- Topbar -->
+
+        <div class="topbar">
+
+            <div class="page-title">
+               Website Traffic <span>Forecasting Dashboard</span>
+            </div>
+
+            <div class="live-badge">
+                <i class="bi bi-circle-fill"></i>
+                Live Analytics Running
+            </div>
+
+        </div>
+
+        <!-- Flash Messages -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div class="alert alert-{{ category }} flash-alert">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+        {% endwith %}
+
+        <!-- Stats Cards -->
+
+        <div class="stats-grid">
+
+            <!-- Current Visitors -->
+
+            <div class="stat-card">
+
+                <div class="card-icon">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+
+                <div class="card-title">
+                    Current Visitors
+                </div>
+
+                <div class="card-value">
+                    {{ current_visitors }}
+                </div>
+
+            </div>
+
+            <!-- Growth -->
+
+            <div class="stat-card">
+
+                <div class="card-icon">
+                    <i class="bi bi-graph-up-arrow"></i>
+                </div>
+
+                <div class="card-title">
+                    Growth Rate
+                </div>
+
+                <div class="card-value growth">
+                    +{{ growth }}%
+                </div>
+
+            </div>
+
+            <!-- Average -->
+
+            <div class="stat-card">
+
+                <div class="card-icon">
+                    <i class="bi bi-bar-chart-fill"></i>
+                </div>
+
+                <div class="card-title">
+                    Average Visitors
+                </div>
+
+                <div class="card-value">
+                    {{ average_visitors }}
+                </div>
+
+            </div>
+
+            <!-- Peak -->
+
+            <div class="stat-card">
+
+                <div class="card-icon">
+                    <i class="bi bi-fire"></i>
+                </div>
+
+                <div class="card-title">
+                    Peak Traffic
+                </div>
+
+                <div class="card-value">
+                    {{ peak_traffic }}
+                </div>
+
+            </div>
+
+            <!-- Lowest -->
+
+            <div class="stat-card">
+
+                <div class="card-icon">
+                    <i class="bi bi-graph-down-arrow"></i>
+                </div>
+
+                <div class="card-title">
+                    Lowest Traffic
+                </div>
+
+                <div class="card-value danger">
+                    {{ lowest_traffic }}
+                </div>
+
+            </div>
+
+            <!-- Total Days -->
+
+            <div class="stat-card">
+
+                <div class="card-icon">
+                    <i class="bi bi-calendar-range-fill"></i>
+                </div>
+
+                <div class="card-title">
+                    Dataset Days
+                </div>
+
+                <div class="card-value">
+                    {{ total_days }}
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Chart -->
+
+        <div class="chart-box">
+
+            <div class="chart-title">
+                Website Traffic Analytics
+            </div>
+
+            <div id="chart"></div>
+
+        </div>
+
+        <!-- Insights -->
+
+        <div class="row g-4 insight-grid">
+
+            <div class="col-lg-4">
+
+                <div class="insight-card">
+
+                    <i class="bi bi-cpu-fill"></i>
+
+                    <h4>
+    Traffic Forecasting
+</h4>
+
+<p>
+    Analyze historical visitor trends and generate future
+    website traffic forecasts using data-driven forecasting models.
+</p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="insight-card">
+
+                    <i class="bi bi-bar-chart-line-fill"></i>
+
+                    <h4>
+                        Advanced Analytics
+                    </h4>
+
+                    <p>
+                        Monitor visitor growth trends, engagement analytics,
+                        and performance metrics in real-time.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="insight-card">
+
+                    <i class="bi bi-cloud-arrow-up-fill"></i>
+
+                    <h4>
+    Dataset Management
+</h4>
+
+<p>
+    Upload and manage website traffic datasets for
+    forecasting, visualization, and trend analysis.
+</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Buttons -->
+
+        <div class="action-buttons">
+
+            <a href="/predict" class="custom-btn btn-blue">
+                <i class="bi bi-stars"></i>
+                Generate Forecast
+            </a>
+
+            <a href="/upload" class="custom-btn btn-green">
+                <i class="bi bi-cloud-upload-fill"></i>
+                Upload CSV
+            </a>
+
+            <a href="/history" class="custom-btn btn-orange">
+                <i class="bi bi-clock-history"></i>
+                Prediction History
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Plotly -->
+
+    <script>
+
+        var graphs = {{ graphJSON | safe }};
+
+        graphs.layout.paper_bgcolor = '#0f172a';
+        graphs.layout.plot_bgcolor = '#0f172a';
+
+        graphs.layout.font = {
+            color: '#ffffff'
+        };
+
+        graphs.layout.xaxis = {
+            gridcolor: '#1e293b'
+        };
+
+        graphs.layout.yaxis = {
+            gridcolor: '#1e293b'
+        };
+
+        Plotly.newPlot(
+            'chart',
+            graphs.data,
+            graphs.layout,
+            {
+                responsive:true
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
